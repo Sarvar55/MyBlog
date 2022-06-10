@@ -39,6 +39,7 @@ public class UserControllerImpl implements UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Map<String, Boolean>> userDelete(@PathVariable Integer userId) {
         Map<String, Boolean> response = new HashMap<>();
+        response.put("User deleted succesfully", true);
         userService.userDelete(userId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
