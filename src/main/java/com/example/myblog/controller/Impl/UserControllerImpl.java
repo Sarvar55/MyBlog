@@ -3,6 +3,7 @@ package com.example.myblog.controller.Impl;
 import com.example.myblog.controller.UserController;
 import com.example.myblog.model.dto.UserDto;
 import com.example.myblog.model.entity.User;
+import com.example.myblog.response.ApiResponse;
 import com.example.myblog.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,9 +38,8 @@ public class UserControllerImpl implements UserController {
 
     @Override
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Map<String, Boolean>> userDelete(@PathVariable Integer userId) {
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("User deleted succesfully", true);
+    public ResponseEntity<ApiResponse> userDelete(@PathVariable Integer userId) {
+        ApiResponse response = new ApiResponse("user deleted succesfully", true);
         userService.userDelete(userId);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(response);
