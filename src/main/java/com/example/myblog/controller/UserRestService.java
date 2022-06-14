@@ -12,7 +12,7 @@ import java.util.Map;
  * @project: MyBlog
  * @author: Sarvar55
  */
-public interface UserController {
+public interface UserRestService {
     ResponseEntity<UserDto> findByUserId(Integer userId);
 
     ResponseEntity<ApiResponse> userDelete(Integer userId);

@@ -1,8 +1,7 @@
 package com.example.myblog.controller.Impl;
 
-import com.example.myblog.controller.UserController;
+import com.example.myblog.controller.UserRestService;
 import com.example.myblog.model.dto.UserDto;
-import com.example.myblog.model.entity.User;
 import com.example.myblog.response.ApiResponse;
 import com.example.myblog.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -10,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @project: MyBlog
@@ -20,11 +17,11 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/v1/user")
-public class UserControllerImpl implements UserController {
+public class UserRestServiceImpl implements UserRestService {
 
     private final UserService userService;
 
-    public UserControllerImpl(UserService userService) {
+    public UserRestServiceImpl(UserService userService) {
         this.userService = userService;
     }
 
