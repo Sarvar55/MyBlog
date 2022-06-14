@@ -22,9 +22,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                               HttpHeaders headers, HttpStatus status,
-                                                               WebRequest request) {
+    public ResponseEntity<Object> handleMethodArgsValidException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getAllErrors().forEach(error -> {
             String message = error.getDefaultMessage();
@@ -37,7 +35,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleExceptions(ResourceNotFoundException exception, WebRequest webRequest) {
+    public ResponseEntity<Object> resourceNotFoundExceptionHandler(ResourceNotFoundException exception) {
         ApiResponse response = new ApiResponse(exception.getMessage(), false);
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)

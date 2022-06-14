@@ -1,5 +1,7 @@
 package com.example.myblog.exception;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -8,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author: Sarvar55
  */
 @ResponseStatus(HttpStatus.NOT_FOUND)
+@Getter
+@Setter
 public class ResourceNotFoundException extends RuntimeException {
     private String resurceName;
     private String fieldName;

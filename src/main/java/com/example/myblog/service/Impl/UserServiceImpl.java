@@ -1,5 +1,6 @@
 package com.example.myblog.service.Impl;
 
+import com.example.myblog.exception.ResourceNotFoundException;
 import com.example.myblog.model.dto.UserDto;
 import com.example.myblog.model.entity.User;
 import com.example.myblog.repository.UserRepository;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto findByUserId(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("user not found")
+                () -> new ResourceNotFoundException("user", "userId", userId)
         );
         UserDto userDto = modelMapper.map(user, UserDto.class);
         return userDto;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void userDelete(Integer userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("user not found")
+                () -> new ResourceNotFoundException("user", "userId", userId)
         );
         userRepository.delete(user);
     }
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateUser(UserDto userDto, Integer userId) {
         User updatedUser = userRepository.findById(userId).orElseThrow(
-                () -> new RuntimeException("user not found ")
+                () -> new ResourceNotFoundException("user", "userId", userId)
         );
 
         updatedUser.setAbout(userDto.getAbout());

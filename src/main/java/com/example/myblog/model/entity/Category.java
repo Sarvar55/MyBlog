@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @project: MyBlog
@@ -26,4 +27,7 @@ public class Category {
     private String categoryTitle;
 
     private String categoryDescription;
+
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts;
 }
