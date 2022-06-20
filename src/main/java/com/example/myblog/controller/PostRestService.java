@@ -2,6 +2,7 @@ package com.example.myblog.controller;
 
 import com.example.myblog.model.dto.PostDto;
 import com.example.myblog.response.ApiResponse;
+import com.example.myblog.response.PostResponse;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface PostRestService {
 
     ResponseEntity<ApiResponse> deletePost(Integer postId);
 
-    ResponseEntity<List<PostDto>> getPosts();
+    ResponseEntity<PostResponse<PostDto>> getPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir);
 
     ResponseEntity<PostDto> getPostById(Integer postId);
 

@@ -1,8 +1,10 @@
 package com.example.myblog.controller.Impl;
 
+import com.example.myblog.config.AppConstant;
 import com.example.myblog.controller.PostRestService;
 import com.example.myblog.model.dto.PostDto;
 import com.example.myblog.response.ApiResponse;
+import com.example.myblog.response.PostResponse;
 import com.example.myblog.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +50,11 @@ public class PostRestServiceImpl implements PostRestService {
 
     @Override
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDto>> getPosts() {
-        return ResponseEntity.status(HttpStatus.OK).body(postService.getPosts());
+    public ResponseEntity<PostResponse<PostDto>> getPosts(@RequestParam(value = "pageNumber", defaultValue = AppConstant.PAGE_NUMBER, required = false) Integer pageNumber,
+                                                          @RequestParam(value = "pageSize", defaultValue = AppConstant.PAGE_SIZE, required = false) Integer pageSize,
+                                                          @RequestParam(value = "sortBy", defaultValue = AppConstant.SORT_BY, required = false) String sortBy,
+                                                          @RequestParam(value = "sortDir", defaultValue = AppConstant.SORT_DIR, required = false) String sortDir) {
+        return ResponseEntity.status(HttpStatus.OK).body(postService.getPosts(pageNumber, pageSize, sortBy, sortDir));
     }
 
     @Override

@@ -8,8 +8,13 @@ import com.example.myblog.model.entity.User;
 import com.example.myblog.repository.CategoryRepository;
 import com.example.myblog.repository.PostRepository;
 import com.example.myblog.repository.UserRepository;
+import com.example.myblog.response.PostResponse;
 import com.example.myblog.service.PostService;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -76,11 +81,22 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getPosts() {
-        return postRepository.findAll()
-                .stream()
-                .map(post -> modelMapper.map(post, PostDto.class))
-                .collect(Collectors.toList());
+    public PostResponse<PostDto> getPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir) {
+
+        Sort sort = sortBy.contains("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<Post> postPage = this.postRepository.findAll(pageable);
+
+        PostResponse<PostDto> response = new PostResponse<>();
+        response.setContent(postPage.getContent().stream().map(post -> modelMapper.map(post, PostDto.class)).collect(Collectors.toList()));
+        response.setPageSize(postPage.getSize());
+        response.setLast(postPage.isLast());
+        response.setPageNumber(postPage.getNumber());
+        response.setTotalElements(postPage.getTotalElements());
+
+        return response;
     }
 
     @Override
