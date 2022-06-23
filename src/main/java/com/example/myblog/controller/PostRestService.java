@@ -4,7 +4,11 @@ import com.example.myblog.model.dto.PostDto;
 import com.example.myblog.response.ApiResponse;
 import com.example.myblog.response.PostResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -27,4 +31,8 @@ public interface PostRestService {
     ResponseEntity<List<PostDto>> getPostByUser(Integer userId);
 
     ResponseEntity<List<PostDto>> searchPosts(String keyword);
+
+    ResponseEntity<PostDto> uploadPostImage(@RequestParam("image") MultipartFile image, @PathVariable Integer postId);
+
+    void downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response);
 }

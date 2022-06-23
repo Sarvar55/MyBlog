@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @project: MyBlog
@@ -35,5 +37,6 @@ public class UserDto {
 
     @NotEmpty(message = "about cannot be empty")
     private String about;
+
 
 }

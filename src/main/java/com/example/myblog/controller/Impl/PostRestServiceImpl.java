@@ -5,11 +5,19 @@ import com.example.myblog.controller.PostRestService;
 import com.example.myblog.model.dto.PostDto;
 import com.example.myblog.response.ApiResponse;
 import com.example.myblog.response.PostResponse;
+import com.example.myblog.service.FileService;
 import com.example.myblog.service.PostService;
+import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -21,9 +29,14 @@ import java.util.List;
 public class PostRestServiceImpl implements PostRestService {
 
     private final PostService postService;
+    private final FileService fileService;
 
-    public PostRestServiceImpl(PostService postService) {
+    @Value("${project.image}")
+    private String path;
+
+    public PostRestServiceImpl(PostService postService, FileService fileService) {
         this.postService = postService;
+        this.fileService = fileService;
     }
 
     @Override
@@ -79,5 +92,25 @@ public class PostRestServiceImpl implements PostRestService {
     @GetMapping("/posts/search/{keyword}")
     public ResponseEntity<List<PostDto>> searchPosts(@PathVariable("keyword") String keyword) {
         return ResponseEntity.status(HttpStatus.OK).body(postService.searchPosts(keyword));
+    }
+
+    @SneakyThrows
+    @Override
+    @PostMapping("/post/image/upload/{postId}")
+    public ResponseEntity<PostDto> uploadPostImage(MultipartFile image, Integer postId) {
+        PostDto postDto = this.postService.getPostById(postId);
+        String fileName = this.fileService.uploadImage(path, image);
+        postDto.setImageName(fileName);
+        PostDto updatePost = this.postService.updatePost(postDto, postId);
+        return ResponseEntity.ok(updatePost);
+    }
+
+    @SneakyThrows
+    @Override
+    @GetMapping(value = "/post/image/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public void downloadImage(@PathVariable String imageName, HttpServletResponse response) {
+        InputStream inputStream = this.fileService.getResource(path, imageName);
+        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+        StreamUtils.copy(inputStream, response.getOutputStream());
     }
 }
